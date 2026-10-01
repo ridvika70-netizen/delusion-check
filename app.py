@@ -10,15 +10,17 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+st.components.v1.html("""
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-418BM0PJ9Y"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-43BNWF19Y"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-418BM0PJ9Y');
+  gtag('config', 'G-43BNWF19Y');
 </script>
+""", height=0)
 st.markdown(
     """ 
     <style> 
