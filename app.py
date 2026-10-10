@@ -427,19 +427,27 @@ if run_btn:
         rent + dining_cost + transit_cost + (vacations / 12)
     ) * city_mult
 
-    savings_factor = 1 / (1 - (savings_percent / 100))
-    total_net_monthly_needed = living_cost_monthly * savings_factor
-
-    inflated_monthly_exp = total_net_monthly_needed * (
-        (1 + (cpi_inflation / 100)) ** years_future
-    )
+    # Calculate savings as a clean addition instead of a massive multiplication trap
+    monthly_savings_target = living_cost_monthly * (savings_percent / 100)
+    total_net_monthly_needed = living_cost_monthly + monthly_savings_target
+    
+    # Compound monthly expenses with your inflation time machine formula
+    inflated_monthly_exp = total_net_monthly_needed * (1 + (cpi_inflation / 100)) ** years_future
+    
+    # Calculate the exact annual cash required in hand
     annual_net_needed = inflated_monthly_exp * 12
     required_gross_ctc = calculate_required_gross_salary(annual_net_needed)
-
-    gap = required_gross_ctc - expected_ctc
-    delusion_score = (
-        0 if gap <= 0 else min(100, int((gap / required_gross_ctc) * 100))
-    )
+    
+    # Run your tax formula on their entered salary to see what it ACTUALLY yields post-tax
+    expected_annual_tax = calculate_indian_income_tax(expected_ctc)
+    expected_annual_takehome = expected_ctc - expected_annual_tax
+    expected_monthly_takehome = expected_annual_takehome / 12
+    
+    # Calculate the true gap between what they NEED and what they EXPECT to make monthly
+    gap = inflated_monthly_exp - expected_monthly_takehome
+    
+    # Calculate their true delusion score based on reality metrics
+    delusion_score = 0 if gap <= 0 else min(100, int((gap / inflated_monthly_exp) * 100))
 
     st.markdown("---")
 
